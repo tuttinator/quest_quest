@@ -9,6 +9,7 @@ module QuestQuest
         trap("TERM") { self.stop }
         trap("INT")  { self.stop }
         EventMachine::WebSocket.run('0.0.0.0', '8080') do |socket|
+
           socket.onopen do |connection|
             @game.handle connection: connection, type: :open
           end
@@ -17,6 +18,7 @@ module QuestQuest
           end
           socket.onclose do |connection|
             @game.handle connection: connection, type: :close
+
           end
         end
       end
