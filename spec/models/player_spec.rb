@@ -6,6 +6,7 @@ module QuestQuest
     let(:connection) { double('connection') }
 
     before do
+      connection.stub(:signature).and_return(1)
       connection.stub(:send).and_return(true)
     end
 

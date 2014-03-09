@@ -8,6 +8,7 @@ module QuestQuest
 
     before do
       connection.stub(:send).and_return(true)
+      connection.stub(:signature).and_return(1)
     end
 
 
@@ -21,12 +22,9 @@ module QuestQuest
           expect(game_controller.players.count).to eq(player_count + 1)
         end
 
-        it 'greets the player'
-
         it 'sends the player the map'
 
         it 'broadcasts to all players that a new player has joined'
-
       end
     end
 

@@ -5,6 +5,7 @@ module QuestQuest
 
     def initialize
       @players = []
+      @grid = Models::Grid.new(20, 20)
     end
 
     def handle(event)
@@ -15,7 +16,7 @@ module QuestQuest
       when :message
         result = MessageParser.new(message: event[:event], from: find_player(event[:connection])).parse
         acknowledge result
-        
+
       when :close
         @players.delete find_player(event[:connection])
         announce 'A player has left'
