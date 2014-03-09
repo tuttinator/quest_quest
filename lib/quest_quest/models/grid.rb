@@ -4,11 +4,20 @@ module QuestQuest
       attr_reader :rows, :columns
       # has_many cells
 
+
       def initialize(rows, columns)
         @rows, @columns = rows, columns
         @grid = Array.new(rows) do |row|
           Array.new(columns) do |column|
             Cell.new
+          end
+        end
+      end
+
+      def as_json
+        rows.times.map do |row|
+          columns.times.map do |column|
+            @grid[row][column].contents
           end
         end
       end
@@ -41,14 +50,5 @@ module QuestQuest
         end
       end
     end
-
-    def as_json
-      rows.times.map do |row|
-        columns.times.map do |column|
-          @grid[row, column].contents
-        end
-      end
-    end
-
   end
 end
