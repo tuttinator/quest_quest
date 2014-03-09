@@ -30,6 +30,8 @@ module QuestQuest
 
       announce 'New player has joined'
 
+      @grid.place(player)
+
       send_map
     end
 
