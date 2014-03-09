@@ -11,7 +11,8 @@ window.QuestQuest = QuestQuest = {
   },
 
   renderMap: function(map) {
-    // dummy
+    console.log(map);
+    //$('.map');
   },
 
   parseMessage: function(message) {
@@ -20,7 +21,7 @@ window.QuestQuest = QuestQuest = {
         console.log('announcement');
         $('.message-log ul').prepend('<li>' + message.message + '</li>');
         break;
-      case 'map':
+      case 'map_update':
         this.renderMap(message.map);
         break;
       default:

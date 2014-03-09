@@ -30,10 +30,15 @@ module QuestQuest
 
       announce 'New player has joined'
 
-      # send the map to the player
+      send_map
     end
 
     private
+
+    def send_map
+      broadcast(map: @grid.as_json, type: :map_update)
+    end
+
 
     def find_player(connection)
        @players.detect {|player| player.socket_id == connection.signature }

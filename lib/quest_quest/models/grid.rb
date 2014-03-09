@@ -36,8 +36,16 @@ module QuestQuest
       def find(thing)
         rows.times.each do |row|
           columns.times.each do |column|
-            return { row: row,  column: column } if thing == self[row, column]
+            { row: row,  column: column } if thing == self[row, column]
           end
+        end
+      end
+    end
+
+    def as_json
+      rows.times.map do |row|
+        columns.times.map do |column|
+          @grid[row, column].contents
         end
       end
     end
