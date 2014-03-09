@@ -19,7 +19,9 @@ module QuestQuest
         acknowledge result
 
       when :close
-        @players.delete find_player(event[:connection])
+        player = find_player(event[:connection])
+        @players.delete player
+        @grid[player.x][player.y] = nil
         announce 'A player has left'
 
       end

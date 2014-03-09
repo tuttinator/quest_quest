@@ -3,6 +3,7 @@ module QuestQuest
     attr_reader :alive
     attr_reader :connection
     attr_accessor :name
+    attr_reader :x, :y
 
     def initialize(connection)
       @connection = connection
@@ -31,7 +32,7 @@ module QuestQuest
     end
 
     def as_json
-      { x: @x, y: @y, id: socket_id }
+      { x: @x, y: @y, player_id: socket_id, type: :player }
     end
 
     private

@@ -16,7 +16,7 @@ module QuestQuest
       def as_json
         rows.times.map do |row|
           columns.times.map do |column|
-            @grid[row][column].contents
+            @grid[row][column].contents.as_json if @grid[row][column].contents
           end
         end
       end

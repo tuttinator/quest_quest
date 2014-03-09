@@ -4,7 +4,14 @@ window.QuestQuest = QuestQuest = {
 
   renderMap: function(map) {
     console.log(map);
-    //$('.map');
+    $.each(map, function(index, rows) {
+      $('.map').append('<ul class="grid-row row-' + index + '"></ul>');
+      $.each(rows, function(colIndex, item) {
+        var thing = '&nbsp;';
+        if(item) { thing = 'x'; }
+        $('.row-' + index).append('<li>' + thing + '</li>');
+      });
+    });
   },
 
   parseMessage: function(message) {
