@@ -8,16 +8,16 @@ module QuestQuest
       EventMachine.run do
         trap("TERM") { self.stop }
         trap("INT")  { self.stop }
-        EventMachine::WebSocket.run('0.0.0.0', '8080') do |socket|
+        EventMachine::WebSocket.run(host: '0.0.0.0', port: '8080') do |socket|
 
-          socket.onopen do |connection|
-            @game.handle connection: connection, type: :open
+          socket.onopen do |event|
+            @game.handle connection: socket, event: event, type: :open
           end
-          socket.onmessage do |connection|
-            @game.handle connection: connection, type: :message
+          socket.onmessage do |event|
+            @game.handle connection: socket, event: event, type: :message
           end
-          socket.onclose do |connection|
-            @game.handle connection: connection, type: :close
+          socket.onclose do |event|
+            @game.handle connection: socket, event: event, type: :close
 
           end
         end

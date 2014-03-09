@@ -3,13 +3,10 @@ require 'spec_helper'
 module QuestQuest
   describe Player do
 
-    let(:connection) do
-      { connection: {
-          headers: {
-            "Sec-WebSocket-Key" => SecureRandom.hex
-          }
-        }
-      }
+    let(:connection) { double('connection') }
+
+    before do
+      connection.stub(:send).and_return(true)
     end
 
     it 'is alive when first created' do

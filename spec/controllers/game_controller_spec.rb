@@ -4,13 +4,10 @@ module QuestQuest
   describe GameController do
     let(:game_controller) { GameController.new }
 
-    let(:connection) do
-      { connection: {
-          headers: {
-            "Sec-WebSocket-Key" => SecureRandom.hex
-          }
-        }
-      }
+    let(:connection) { double('connection') }
+
+    before do
+      connection.stub(:send).and_return(true)
     end
 
 
@@ -23,6 +20,12 @@ module QuestQuest
           game_controller.handle({connection: connection, type: :open})
           expect(game_controller.players.count).to eq(player_count + 1)
         end
+
+        it 'greets the player'
+
+        it 'sends the player the map'
+
+        it 'broadcasts to all players that a new player has joined'
 
       end
     end

@@ -2,6 +2,7 @@ module QuestQuest
   class Player
 
     attr_reader :alive
+    attr_reader :connection
 
     def initialize(connection)
       @connection = connection
@@ -18,6 +19,10 @@ module QuestQuest
 
     def valid?
       !@connection.nil? and coordinates_set?
+    end
+
+    def socket_id
+      connection.signature
     end
 
     private
