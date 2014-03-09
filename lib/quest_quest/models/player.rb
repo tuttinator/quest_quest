@@ -1,12 +1,13 @@
 module QuestQuest
   class Player
-
     attr_reader :alive
     attr_reader :connection
+    attr_accessor :name
 
     def initialize(connection)
       @connection = connection
       @alive = true
+      @name = "Anonymous user ##{socket_id}"
     end
 
     def coordinates=(coords)
@@ -23,6 +24,10 @@ module QuestQuest
 
     def socket_id
       connection.signature
+    end
+
+    def message(message)
+      connection.send(message.to_json)
     end
 
     private

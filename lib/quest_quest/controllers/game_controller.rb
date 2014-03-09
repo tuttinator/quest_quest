@@ -1,6 +1,7 @@
 module QuestQuest
   class GameController
     attr_reader :players
+    attr_accessor :name
 
     def initialize
       @players = []
@@ -9,46 +10,57 @@ module QuestQuest
     def handle(event)
       case event[:type]
       when :open
-        puts event
         add_new_player(event[:connection])
-      when :message
-        # parse message
-      when :close
-        remove_player_from_event(event[:connection])
-      end
-    end
 
-    def parse_message(event)
-      puts event
+      when :message
+        result = MessageParser.new(message: event[:event], from: find_player(event[:connection])).parse
+        acknowledge result
+        
+      when :close
+        @players.delete find_player(event[:connection])
+        announce 'A player has left'
+
+      end
     end
 
     def add_new_player(connection)
       player = Player.new(connection)
       @players << player
 
-      puts 'New player joined'
-      broadcast(message: 'New player has joined.', player_count: @players.count, type: :announcement)
+      announce 'New player has joined'
+
       # send the map to the player
-    end
-
-    def remove_player_from_event(connection)
-      player = @players.detect {|player| player.socket_id == connection.signature }
-      @players.delete player
-
-      puts 'Player has left'
-      broadcast(message: 'A player has left.', player_count: @players.count, type: :announcement)
     end
 
     private
 
-    def broadcast(message)
-      @players.each do |player|
-        message_player(player, message)
+    def find_player(connection)
+       @players.detect {|player| player.socket_id == connection.signature }
+    end
+
+    def announce(message)
+
+      puts message
+
+      broadcast(message: message,
+                player_count: @players.count,
+                players: @players.map {|p| p.name},
+                type: :announcement)
+    end
+
+    def acknowledge(result)
+      if result == :name_changed
+        broadcast(player_count: @players.count,
+                  players: @players.map {|p| p.name},
+                  type: :acknowledgement)
       end
     end
 
-    def message_player(player, message)
-      player.connection.send(message.to_json)
+    def broadcast(message)
+      @players.each do |player|
+        player.message(message)
+      end
     end
+
   end
 end

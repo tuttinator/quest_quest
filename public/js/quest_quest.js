@@ -29,10 +29,17 @@ window.QuestQuest = QuestQuest = {
     if(message.player_count) {
       $('.player-count').text(message.player_count + ' players');
     }
+    if(message.players) {
+      $('.players ul').empty();
+      $.each(message.players, function(index, name) {
+        console.log(name);
+        $('.players ul').prepend('<li>' + name + '</li>');
+      });
+    }
   },
 
   init: function() {
-    this.playerName = prompt('What is your handle?');
+    this.playerName = prompt("What's your handle?");
     var that = this;
 
     this.socket = new WebSocket('ws://localhost:8080');
