@@ -30,6 +30,10 @@ module QuestQuest
       connection.send(message.to_json)
     end
 
+    def as_json
+      { x: @x, y: @y, id: socket_id }
+    end
+
     private
 
     def coordinates_set?
