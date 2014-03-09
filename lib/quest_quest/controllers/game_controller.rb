@@ -15,6 +15,7 @@ module QuestQuest
 
       when :message
         result = MessageParser.new(message: event[:event], from: find_player(event[:connection])).parse
+
         acknowledge result
 
       when :close
@@ -28,9 +29,9 @@ module QuestQuest
       player = Player.new(connection)
       @players << player
 
-      announce 'New player has joined'
-
       @grid.place(player)
+
+      announce 'New player has joined'
 
       send_map
     end
@@ -40,7 +41,6 @@ module QuestQuest
     def send_map
       broadcast(map: @grid.as_json, type: :map_update)
     end
-
 
     def find_player(connection)
        @players.detect {|player| player.socket_id == connection.signature }
@@ -66,7 +66,10 @@ module QuestQuest
 
     def broadcast(message)
       @players.each do |player|
-        player.message(message)
+        player.message(message.merge({
+          player_id: player.socket_id,
+          current_coordinates: player.coordinates
+        }))
       end
     end
 

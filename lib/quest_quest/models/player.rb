@@ -15,7 +15,7 @@ module QuestQuest
     end
 
     def coordinates
-      [x, y]
+      [@x, @y]
     end
 
     def valid?

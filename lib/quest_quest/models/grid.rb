@@ -4,7 +4,6 @@ module QuestQuest
       attr_reader :rows, :columns
       # has_many cells
 
-
       def initialize(rows, columns)
         @rows, @columns = rows, columns
         @grid = Array.new(rows) do |row|
@@ -29,16 +28,17 @@ module QuestQuest
       def [](*coordinates)
         raise 'Requires at least one coordinate' if coordinates.length == 0
         y, x = coordinates
-        x.nil? ? @grid[y] : @grid[y][x]
+        x.nil? ? @grid[y] : @grid[x][y]
       end
 
       def place(thing)
         x = rand(@columns)
         y = rand(@rows)
-        if @grid[y][x].contents
+        if @grid[x][y].contents
           place(thing)
         else
-          @grid[y][x].contents = thing
+          @grid[x][y].contents = thing
+          thing.coordinates = [x, y]
         end
       end
 
