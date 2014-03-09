@@ -2,14 +2,6 @@ window.QuestQuest = QuestQuest = {
   playerName: null,
   socket: null,
 
-  sendMessage: function (message, type) {
-    if(this.socket_id === undefined) {
-      alert('Cannot send any data to the server, handshake has failed.');
-    } else {
-      this.socket.send(JSON.stringify({ message: message, handler: handler, socket_id: this.socket_id }));
-    }
-  },
-
   renderMap: function(map) {
     console.log(map);
     //$('.map');
