@@ -2,6 +2,17 @@ window.QuestQuest = QuestQuest = {
   playerName: null,
   socket: null,
 
+  sendMessage: function(message, type) {
+
+    console.log(message, type);
+
+    this.socket.send(JSON.stringify({
+      message: message,
+      type: type,
+    }));
+
+  },
+
   renderMap: function(map) {
     console.log(map);
     $.each(map, function(index, rows) {
@@ -71,5 +82,22 @@ window.QuestQuest = QuestQuest = {
 
 $(function() {
   QuestQuest.init();
+
+  // object to hold movement key information
+  var inputs = {};
+  // add wasd inputs to object with a handler of movement
+  inputs[107] = { key: 'k', handler: 'movement', message: 'up' }
+  inputs[106] = { key: 'j', handler: 'movement', message: 'down' }
+  inputs[104] = { key: 'h', handler: 'movement', message: 'left' }
+  inputs[108] = { key: 'l', handler: 'movement', message: 'right' }
+
+  // jquery bindings listening for keypress events
+  $("body").keypress(function(event) {
+    if(event.which in inputs) { // check for key in inputs object before proceeding
+      var input = inputs[event.which]; // assign an input from our object
+      QuestQuest.sendMessage(input.message, input.handler); // send a movement message to the server, of handler 'movement'
+    }
+  });
 });
+
 
